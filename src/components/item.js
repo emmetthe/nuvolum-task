@@ -7,14 +7,15 @@ import StarRatingComponent from 'react-star-rating-component';
 
 class Item extends React.Component {
   state = {
-    items: [],  // stores items after fetching from api
+    items: [], // stores items after fetching from api
     // need boolean values to check for when chevron is clicked
     showDetails: false,
     currItem: null,
     isActive: false
   };
 
-  componentDidMount() {
+  componentDidMount() { 
+    // renders items once mounted
     axios.get(`https://fakestoreapi.com/products?limit=5`).then((res) => {
       const items = res.data;
       this.setState({ items });
@@ -22,6 +23,7 @@ class Item extends React.Component {
   }
 
   handleDetails(item) {
+    // event listener that changes state each time an item is clicked
     this.setState({ showDetails: !this.state.showDetails, currItem: item, isActive: !this.state.isActive });
   }
 
@@ -32,6 +34,7 @@ class Item extends React.Component {
     if (this.state.showDetails) {
       itemDetails = (
         <div className="item-detail-container">
+
           <div className="top-details">
             <div className="item-price">${this.state.currItem.price}</div>
             <div>{this.state.currItem.description}</div>
@@ -40,6 +43,7 @@ class Item extends React.Component {
               <div>({this.state.currItem.rating.count})</div>
             </div>
           </div>
+
           <button className="cart-button">Add to cart</button>
         </div>
       );
@@ -47,16 +51,19 @@ class Item extends React.Component {
     return (
       <div className="item-container">
         <div className="item-list">
+          
           {this.state.items.map((item) => (
+            // iterates through items in state and renders each one
             <div className="item" key={item.id} onClick={() => this.handleDetails(item)}>
               <img className="item-image" src={`${item.image}`}></img>
               <p className="item-title">{item.title}</p>
-              <FontAwesomeIcon   // need to check state to toggle chevon for one element
+              <FontAwesomeIcon // need to check state to toggle chevron for specific element
                 className={this.state.isActive && this.state.currItem == item ? 'chevron-right-active' : 'chevron-left'}
                 icon={this.state.isActive && this.state.currItem == item ? faChevronRight : faChevronLeft}
               />
             </div>
           ))}
+
         </div>
         {itemDetails}
       </div>
