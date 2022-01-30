@@ -7,7 +7,8 @@ import StarRatingComponent from 'react-star-rating-component';
 
 class Item extends React.Component {
   state = {
-    items: [],
+    items: [],  // stores items after fetching from api
+    // need boolean values to check for when chevron is clicked
     showDetails: false,
     currItem: null,
     isActive: false
@@ -26,6 +27,8 @@ class Item extends React.Component {
 
   render() {
     let itemDetails;
+
+    // only appears when state is true (when item is clicked on)
     if (this.state.showDetails) {
       itemDetails = (
         <div className="item-detail-container">
@@ -33,7 +36,6 @@ class Item extends React.Component {
             <div className="item-price">${this.state.currItem.price}</div>
             <div>{this.state.currItem.description}</div>
             <div className="item-ratings">
-              {/* <div>{this.state.currItem.rating.rate}</div> */}
               <StarRatingComponent name="rate1" starCount={5} value={this.state.currItem.rating.rate} onStarClick={null} />
               <div>({this.state.currItem.rating.count})</div>
             </div>
@@ -49,7 +51,7 @@ class Item extends React.Component {
             <div className="item" key={item.id} onClick={() => this.handleDetails(item)}>
               <img className="item-image" src={`${item.image}`}></img>
               <p className="item-title">{item.title}</p>
-              <FontAwesomeIcon
+              <FontAwesomeIcon   // need to check state to toggle chevon for one element
                 className={this.state.isActive && this.state.currItem == item ? 'chevron-right-active' : 'chevron-left'}
                 icon={this.state.isActive && this.state.currItem == item ? faChevronRight : faChevronLeft}
               />
